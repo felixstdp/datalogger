@@ -13,6 +13,8 @@ int operacion = 0;
 
 void setup()
 {
+  pinMode(valvula1,OUTPUT);
+  pinMode(valvula2,OUTPUT);
   Wire.begin();
   Serial.begin(9600);
   Serial.println("Probando tarjeta SD");
