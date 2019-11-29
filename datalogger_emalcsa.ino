@@ -44,13 +44,13 @@ void loop()
 // operaciones con valvulas 
 
   if (operacion==0) {
-    digitalWrite(valvula1,HIGH);  // minuto 0 abrir
-    digitalWrite(valvula2,HIGH);
+    digitalWrite(valvula1,LOW);  // minuto 0 abrir
+    digitalWrite(valvula2,LOW);
   }
 
   if (operacion==10) {
-    digitalWrite(valvula1,LOW);  // minuto 10 cerrar
-    digitalWrite(valvula2,LOW);
+    digitalWrite(valvula1,HIGH);  // minuto 10 cerrar
+    digitalWrite(valvula2,HIGH);
   }
 
 // lectura de las células (suma de 30 medidas)
