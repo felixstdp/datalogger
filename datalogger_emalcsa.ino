@@ -15,6 +15,9 @@ void setup()
 {
   pinMode(valvula1,OUTPUT);
   pinMode(valvula2,OUTPUT);
+  digitalWrite(valvula1,HIGH);
+  digitalWrite(valvula2,HIGH);
+  
   Wire.begin();
   Serial.begin(9600);
   Serial.println("Probando tarjeta SD");
@@ -55,17 +58,17 @@ void loop()
 
 // lectura de las células (suma de 30 medidas)
 
-  unsigned long celula0=0;
-  unsigned long celula1=0;
+  unsigned long entrada0=0;
+  unsigned long entrada1=0;
   
   for (int i=0;i<30;i++){
-    celula0 += analogRead(0);
-    celula1 += analogRead(1);
-    delay(1000);
+    entrada0 += analogRead(A0);
+    entrada1 += analogRead(A1);
+    delay(10);
   }
 
-  celula0 = celula0/30; //promedio de 30 medidas
-  celula1 = celula1/30;
+  entrada0 = entrada0/30; //promedio de 30 medidas
+  entrada1 = entrada1/30;
 
 // código pendiente: convertir V a unidades físicas
 
@@ -73,7 +76,7 @@ void loop()
 
 // escribe los datos a una cadena de caracteres
 
-  sprintf(dataString, "%02d/%02d/20%02d;%02d:%02d:%02d;%04u;%04u", dayOfMonth, month, year, hour,minute,second,celula0, celula1);	
+  sprintf(dataString, "%02d/%02d/20%02d;%02d:%02d:%02d;%04u;%04u", dayOfMonth, month, year, hour,minute,second,entrada0, entrada1);	
 
 // muestra los datos por el puerto serie
     
@@ -93,7 +96,7 @@ void loop()
 
 // espera 10 minutos hasta la próxima operación
 
-  while (millis()-timestamp<600000){}
+  while ((millis()-timestamp)<6000){}
 
   timestamp=millis();
   if (timestamp>=4294966796) timestamp-=4294966796; // pone el contador millis a cero (duración 50 días)
