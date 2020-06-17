@@ -10,7 +10,7 @@ unsigned long timestamp=millis();
 unsigned long entrada0, entrada1, entrada2;
 float caudal, presion1, presion2;
 byte second, minute, hour, dayOfWeek, dayOfMonth, month, year;
-char dataString[32];
+char dataString[36];
 int operacion = 0;
 
 void setup()
@@ -72,6 +72,7 @@ void loop()
   for (int i=0;i<30;i++){
     entrada0 += analogRead(A0);
     entrada1 += analogRead(A1);
+    entrada2 += analogRead(A2);
     delay(10);
   }
 
