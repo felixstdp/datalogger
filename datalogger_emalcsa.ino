@@ -7,6 +7,8 @@
 #define valvula2 9
 
 unsigned long timestamp=millis();
+unsigned long entrada0, entrada1, entrada2;
+float caudal, presion1, presion2;
 byte second, minute, hour, dayOfWeek, dayOfMonth, month, year;
 char dataString[32];
 int operacion = 0;
@@ -56,10 +58,16 @@ void loop()
     digitalWrite(valvula2,HIGH);
   }
 
+  if (operacion==20) {
+    digitalWrite(valvula1,HIGH);  // minuto 20 cerrar
+    digitalWrite(valvula2,HIGH);
+  }
+  
 // lectura de las células (suma de 30 medidas)
 
-  unsigned long entrada0=0;
-  unsigned long entrada1=0;
+  entrada0=0;
+  entrada1=0;
+  entrada2=0;
   
   for (int i=0;i<30;i++){
     entrada0 += analogRead(A0);
@@ -69,14 +77,18 @@ void loop()
 
   entrada0 = entrada0/30; //promedio de 30 medidas
   entrada1 = entrada1/30;
+  entrada2 = entrada2/30;
 
 // código pendiente: convertir V a unidades físicas
 
-// ...
+  caudal = entrada0;
+  presion1 = entrada1 *5 /1023;
+  presion2 = entrada2 *5 /1023;
+    
 
 // escribe los datos a una cadena de caracteres
 
-  sprintf(dataString, "%02d/%02d/20%02d;%02d:%02d:%02d;%04u;%04u", dayOfMonth, month, year, hour,minute,second,entrada0, entrada1);	
+  sprintf(dataString, "%02d/%02d/20%02d;%02d:%02d:%02d;%d.%02d;%d.%02d;%d.%02d", dayOfMonth, month, year, hour,minute,second,(int)caudal, (int)(caudal*100)%100, (int)presion1, (int)(presion1*100)%100, (int)presion2, (int)(presion2*100)%100);	
 
 // muestra los datos por el puerto serie
     
