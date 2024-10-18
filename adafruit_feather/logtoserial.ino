@@ -40,7 +40,7 @@ void loop() {
 
     // creates string to log onto SD card
 
-    char logline[30];
+    char logline[24];
     sprintf(logline, "%04d/%02d/%02d,%02d:%02d:%02d,%04u", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second(), windspeed);
     Serial.println(logline);
   }
