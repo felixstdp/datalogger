@@ -6,7 +6,7 @@
 #define SD_CS   10
 
 unsigned long timestamp=millis();
-char filename[16];
+char filename[17];
 
 RTC_PCF8523 rtc;
 File logfile;
@@ -87,21 +87,9 @@ void loop() {
 
     // creates string to log onto SD card
 
-    char date[10];
-    sprintf(date, "%04d/%02d/%02", now.year(), now.month(), now.day());
-    char times[8];
-    sprintf(times, "%02d:%02d:%02", now.hour(), now.minute(), now.second());
-    char logdata[4];
-    sprintf(logdata, "%04u", windspeed);
-
-    char logline[32];
-    strcpy(logline,date);
-    strcat(logline,",");
-    strcat(logline,times);
-    strcat(logline,",");
-    strcat(logline,logdata);
-
-    logfile.println(logline);
+    char logline[24];
+    sprintf(logline, "%04d/%02d/%02d,%02d:%02d:%02d,%04u", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second(), windspeed);
+    Serial.println(logline);
     }
   
 }
