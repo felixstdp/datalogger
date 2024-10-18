@@ -1,7 +1,6 @@
 #include "RTClib.h"
 #include <SPI.h>
 #include <SD.h>
-
 // Feather 32u4 basic proto
 #define LED_RED LED_BUILTIN
 #define SD_CS   10
@@ -50,15 +49,7 @@ void setup() {
   // naming the log.csv file to save in the SD card
 
   DateTime now = rtc.now();
-  sprintf(filename, "/%04d%02d%02d00LOG.CSV", now.year(), now.month(), now.day());  
-  for (uint8_t i = 0; i < 100; i++) {
-    filename[9] = '0' + i/10;
-    filename[10] = '0' + i%10;
-    // create if does not exist, do not open existing, write, sync after write
-    if (! SD.exists(filename)) {
-      break;
-    }
-  }  
+  sprintf(filename, "/%04d%02d%02d.CSV", now.year(), now.month(), now.day());  
     
   Serial.println(filename);
 
@@ -71,8 +62,6 @@ void setup() {
   Serial.print("Writing to "); 
   Serial.println(filename);
   Serial.println("Ready!");
-
-  
 
 }
 
@@ -91,8 +80,10 @@ void loop() {
     char logline[24];
     sprintf(logline, "%04d/%02d/%02d,%02d:%02d:%02d,%04u", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second(), windspeed);
     Serial.println(logline);
+    logfile.println(logline);
+    // save the output!
+    logfile.flush();
     }
-  
 }
 
 // blink out an error code
