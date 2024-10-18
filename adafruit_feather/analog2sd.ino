@@ -5,11 +5,10 @@
 #define LED_RED LED_BUILTIN
 #define SD_CS   10
 
-unsigned long timestamp=millis();
-char filename[17];
-
 RTC_PCF8523 rtc;
 File logfile;
+
+unsigned long timestamp=millis();
 
 void setup() {
   // put your setup code here, to run once:
@@ -49,6 +48,7 @@ void setup() {
   // naming the log.csv file to save in the SD card
 
   DateTime now = rtc.now();
+  char filename[12];
   sprintf(filename, "/%04d%02d%02d.CSV", now.year(), now.month(), now.day());  
     
   Serial.println(filename);
@@ -67,18 +67,27 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+
+  // ----------------------------------
+  //        IMPORTANT!
+  // ----------------------------------
+  
   if (millis()-timestamp>=1000) // time between measurements in milliseconds
   {
     timestamp=millis();
     if (timestamp>=4294966796) timestamp-=4294966796;
 
     DateTime now = rtc.now();
-    int windspeed=analogRead(A1); // values 0-1023 corresponding 0-3.3v
+    
+    int U=analogRead(A0); // values 0-1023 corresponding 0-3.3v-5v
+    int V=analogRead(A1); 
+    int W=analogRead(A2); 
+    int S=analogRead(A3); // status
 
     // creates string to log onto SD card
 
-    char logline[24];
-    sprintf(logline, "%04d/%02d/%02d,%02d:%02d:%02d,%04u", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second(), windspeed);
+    char logline[40];
+    sprintf(logline, "%04d/%02d/%02d,%02d:%02d:%02d,%04u,%04u,%04u,%04u", now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second(), U, V, W, S);
     Serial.println(logline);
     logfile.println(logline);
     // save the output!
