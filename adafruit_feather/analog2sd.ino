@@ -1,6 +1,7 @@
 #include "RTClib.h"
+#include <SPI.h>
 #include <SD.h>
-#include <Wire.h>
+
 // Feather 32u4 basic proto
 #define LED_RED LED_BUILTIN
 #define SD_CS   10
